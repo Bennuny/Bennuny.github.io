@@ -14,7 +14,7 @@
 <meta property="og:description" content="步骤一：起点应该从哪里开始学习CMake？这篇教程介绍一下CMake的基本语法、命令和变量。了解这些概念之后，我们通过三个练习创建一个简单的CMake项目。 这个教程的每个练习会先给出练习的背景信息。然后给出一个目标和有帮助资源列表。在 编辑文件 部分下的每个文件在 Step1 目录下，包含一个或多个 TODO 注释。 每个 TODO 注释代表需要添加或者修改一行或两行代码。这些 TODO 要按顺">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-27T12:33:19.000Z">
-<meta property="article:modified_time" content="2022-12-28T03:55:08.190Z">
+<meta property="article:modified_time" content="2022-12-29T03:54:49.873Z">
 <meta property="article:author" content="Ben">
 <meta property="article:tag" content="cmake">
 <meta name="twitter:card" content="summary">
@@ -112,25 +112,21 @@
 <h3 id="编辑文件"><a href="#编辑文件" class="headerlink" title="编辑文件"></a>编辑文件</h3><ul>
 <li>CMakeList.txt</li>
 </ul>
-<h3 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h3><p>在 <code>Help/guide/tutorial/Step1</code> 目录下有本次构建需要的源代码 <code>tutorial.cxx</code>，用来计算一个数值的平方根。本次练习中不需要修改这个文件。</p>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>在 <code>Help/guide/tutorial/Step1</code> 目录下有本次构建需要的源代码 <code>tutorial.cxx</code>，用来计算一个数值的平方根。本次练习中不需要修改这个文件。</p>
 <p>同目录下 <code>CMakeList.txt</code> 文件需要你完成从 <code>TODO1</code> 到 <code>TODO3</code> 。</p>
 <h3 id="构建运行"><a href="#构建运行" class="headerlink" title="构建运行"></a>构建运行</h3><p>当完成了<code>TODO1</code> 到 <code>TODO3</code> 后，我们准备构建我们的项目！首先，运行<code>cmake</code>命令行或者 <code>cmake-gui</code>来配置项目，然后用选择的工具构建项目。</p>
 <p>例如，命令行中我们到 <code>Help/guide/tutorial</code> 目录下，然后创建一个构建目录</p>
-<blockquote>
-<p>mkdir Step1_build</p>
-</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir Step1_build</span><br></pre></td></tr></table></figure>
+
 <p>然后，到构建目录下运行 <code>cmake</code> 配置项目并生成原生系统构建：</p>
-<blockquote>
-<p>cd Step1_build<br>cmake ..&#x2F;Step1</p>
-</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd Step1_build</span><br><span class="line">cmake ../Step1</span><br></pre></td></tr></table></figure>
+
 <p>然后，调用生成的构建系统来实际编译&#x2F;链接项目：</p>
-<blockquote>
-<p>cmake –build .</p>
-</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake --build .</span><br></pre></td></tr></table></figure>
+
 <p>最终，尝试用最新构建的 <code>Tutorial</code> 执行以下命令：</p>
-<blockquote>
-<p>Tutorial 4294967296<br>Tutorial 10<br>Tutorial</p>
-</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Tutorial 4294967296</span><br><span class="line">Tutorial 10</span><br><span class="line">Tutorial</span><br></pre></td></tr></table></figure>
+
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>如上所述，有三行命令的 <code>CMakeList.txt</code> 是本次练习启动和运行的全部内容了。第一行使用 <code>cmake_minimum_required()</code> 设置CMake版本，如下：</p>
 <details><summary>TODO1: Click to show/hide answer</summary>
 <table><tr><td bgcolor=blue>TODO 1: CMakeLists.txt</td></tr>
@@ -149,6 +145,37 @@
 <details><summary>TODO2: Click to show/hide answer</summary>
 <table><tr><td bgcolor=blue>TODO 1: CMakeLists.txt</td></tr>
 <tr><td>add_executable(Tutorial tutorial.cxx)</td></tr>
+</table>
+</details>
+
+
+<h2 id="练习二：指定C-标准"><a href="#练习二：指定C-标准" class="headerlink" title="练习二：指定C++标准"></a>练习二：指定C++标准</h2><p>CMake有一些特殊的变量，要么在之后的场景中指定，或对于CMake构建项目代码有实际意义。这些变量其中一些以 <code>CMAKE_</code> 开头。在项目中创建变量时避免使用此命名约定。其中两个特殊变量是：CMAKE_CXX_STANDARD和CMAKE_CXX_STANDARD_REQUIRED。这两个变量一起指定了构建项目的C++标准。</p>
+<h3 id="目标-1"><a href="#目标-1" class="headerlink" title="目标"></a>目标</h3><p>增加一个需要C++ 11的功能</p>
+<h3 id="资源列表-1"><a href="#资源列表-1" class="headerlink" title="资源列表"></a>资源列表</h3><p><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/CMAKE_CXX_STANDARD.html#variable:CMAKE_CXX_STANDARD">CMAKE_CXX_STANDARD</a><br><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/CMAKE_CXX_STANDARD_REQUIRED.html#variable:CMAKE_CXX_STANDARD_REQUIRED">CMAKE_CXX_STANDARD_REQUIRED</a><br><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/set.html#command:set">set()</a></p>
+<h3 id="编辑文件-1"><a href="#编辑文件-1" class="headerlink" title="编辑文件"></a>编辑文件</h3><ul>
+<li>CMakeList.txt</li>
+<li>tutorial.cxx</li>
+</ul>
+<h3 id="开始-1"><a href="#开始-1" class="headerlink" title="开始"></a>开始</h3><p>继续编辑步骤一目录下的文件。完成 <code>TODO4</code> 到 <code>TODO6</code>。<br>首先，编辑 <code>tutorial.cxx</code> 文件，增加一个需要C++11支持的功能。然后更新 <code>CMakeList.txt</code> 支持C++11标准。</p>
+<h3 id="构建运行-1"><a href="#构建运行-1" class="headerlink" title="构建运行"></a>构建运行</h3><p>再次构建我们的项目。练习一中，我们已经创建了build目录并运行了CMake，可以忽略构建步骤：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd Step1_build</span><br><span class="line">cmake --build .</span><br></pre></td></tr></table></figure>
+
+<p>现在我们可以使用新构建的 <code>Tutorial</code> 运行和之前相同的命令:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Tutorial 4294967296</span><br><span class="line">Tutorial 10</span><br><span class="line">Tutorial</span><br></pre></td></tr></table></figure>
+
+<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>在 <code>tutorial.cxx</code> 文件中，使用 <code>std::stod</code> 替代 <code>atof</code>。<code>std::stod</code> 是需要C++11标准支持的功能。 修改完结果如下：</p>
+<details><summary>TODO4: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 4: tutorial.cxx</td></tr>
+<tr><td>const double inputValue = std::stod(argv[1])</td></tr>
+</table>
+</details>
+
+<p>完成 <code>TODO 5</code>，简单的移除 <code>#include &lt;cstdlib&gt;</code></p>
+<p>我们需要在CMake代码中使用正确的标志声明状态。CMake中开启支持指定C++标准的方法是使用 <code>CMAKE_CXX_STANDARD</code> 变量。本次练习，在 <code>CMAKELists.txt</code> 中设置 <code>CMAKE_CXX_STANDARD</code> 变量为 <code>11</code>，<code>CMAKE_CXX_STANDARD_REQUIRED</code> 为 <code>True</code>。要确保新增的 <code>CMAKE_CXX_STANDARD</code> 声明在 <code>add_executable()</code> 之前。****</p>
+<details><summary>TODO6: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 6: CMakeLists.txt</td></tr>
+<tr><td>set(CMAKE_CXX_STANDARD 11)</td></tr>
+<tr><td>set(CMAKE_CXX_STANDARD_REQUIRED True)</td></tr>
 </table>
 </details>
 
