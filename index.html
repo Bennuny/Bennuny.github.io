@@ -162,7 +162,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Tutorial 4294967296</span><br><span class="line">Tutorial 10</span><br><span class="line">Tutorial</span><br></pre></td></tr></table></figure>
 
 <h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>在 <code>tutorial.cxx</code> 文件中，使用 <code>std::stod</code> 替代 <code>atof</code>。<code>std::stod</code> 是需要C++11标准支持的功能。 修改完结果如下：</p>
-<details><summary>TODO4: Click to show/hide answer</summary>
+<details><summary>TODO4: Click to **show**/hide answer</summary>
 <table><tr><td bgcolor=blue>TODO 4: tutorial.cxx</td></tr>
 <tr><td>const double inputValue = std::stod(argv[1])</td></tr>
 </table>
@@ -177,6 +177,81 @@
 </table>
 </details>
 
+
+<h2 id="练习三：增加版本号和配置头文件"><a href="#练习三：增加版本号和配置头文件" class="headerlink" title="练习三：增加版本号和配置头文件"></a>练习三：增加版本号和配置头文件</h2><p>如果可以在 <code>CMakeList.txt</code> 中定义一个变量，在代码中也可以访问这个变量，那是非常有帮助的。在这个例子中，我们将要打印项目版本号。</p>
+<p>一个解决方法是配置一个头文件。创建一个输入文件，包含一个或多个可被替代的变量。通过一个特定的语法定义这些变量，<code>@VAR@</code>. 然后，通过 <code>configure_file()</code> 命令将输入文件复制到指定输出文件，并用<code>CMakeLists.txt</code> 中的 <code>VAR</code> 当前值替换这些变量。</p>
+<p>我们可以在源码中直接编辑版本号，但首选使用这个方法定义版本号，因为它创建了单一真实来源并避免了重复定义。</p>
+<h3 id="目标-2"><a href="#目标-2" class="headerlink" title="目标"></a>目标</h3><p>定义并报告项目版本号。</p>
+<h3 id="资源列表-2"><a href="#资源列表-2" class="headerlink" title="资源列表"></a>资源列表</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION_MAJOR.html#variable:%3CPROJECT-NAME%3E_VERSION_MAJOR"><code>&lt;PROJECT-NAME&gt;_VERSION_MAJOR</code></a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION_MINOR.html#variable:%3CPROJECT-NAME%3E_VERSION_MINOR"><PROJECT-NAME>_VERSION_MINOR</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/configure_file.html#command:configure_file">configure_file()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></li>
+</ul>
+<h3 id="编辑文件-2"><a href="#编辑文件-2" class="headerlink" title="编辑文件"></a>编辑文件</h3><ul>
+<li>CMakeLists.txt</li>
+<li>tutorial.cxx</li>
+</ul>
+<h3 id="开始-2"><a href="#开始-2" class="headerlink" title="开始"></a>开始</h3><p>继续编辑 <code>步骤一</code> 中的文件。完成 <code>TODO 7</code> 到 <code>TODO 12</code>。本次练习中，首先在 <code>CMakeLists.txt</code> 中增加项目版本号。在同一文件中，使用 <code>configure_file()</code> 将给定的输入文件复制到输出文件，并替换输入文件内容中的一些变量。</p>
+<p>接下来，创建输入头文件 <code>TutorialConfig.h</code>  定义版本号数字 接收通过 <code>configure_file()</code> 传进来的变量。</p>
+<p>最后，更新 <code>tutorial.cxx</code> 打印版本号。</p>
+<h3 id="构建运行-2"><a href="#构建运行-2" class="headerlink" title="构建运行"></a>构建运行</h3><p>再次构建我们的项目。和之前一样，我们已经创建了build目录并运行了CMake命令，可以忽略构建步骤：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd Step1_build</span><br><span class="line">cmake --build .</span><br></pre></td></tr></table></figure>
+
+<p>确保无参数运行可执行文件时，打印当前版本号。</p>
+<h3 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h3><p>本次练习，改善我们的可执行程序输出版本号。虽然我们可以在源码中实现，但使用 <code>CMakeLists.txt</code> 可以确保维护版本号的单一数据源。</p>
+<p>首先，修改 <code>CMakeLists.txt</code> 文件，使用 <code>project()</code> 命令设置项目名称和版本号。当调用 <code>project()</code> ，CMake在幕后定义了 <code>Tutorial_VERSION_MAJOR</code> 和 <code>Tutorial_VERSION_MINOR</code>。</p>
+<details><summary>TODO 7: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 7: CMakeLists.txt</td></tr>
+<tr><td>project(Tutorial VERSION 1.0)</td></tr>
+</table>
+</details>
+
+<p>然后调用 <code>configure_file()</code> 拷贝输入文件并用CMake替代指定变量。</p>
+<details><summary>TODO 8: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 8: CMakeLists.txt</td></tr>
+<tr><td>configure_file(TutorialConfig.h.in TutorialConfig.h)</td></tr>
+</table>
+</details>
+
+<p>由于配置文件会被写入项目的运行目录，因此需要将该目录添加到路径列表以搜索包含文件。</p>
+<p>注意：本教程中，我们可互相引用项目的构建和项目的二进制目录，这些都是相同的，并不是指bin&#x2F;目录。</p>
+<p>使用 <code>target_include_directories()</code> 指定可执行目标在何处查找头文件。</p>
+<details><summary>TODO 9: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 9: CMakeLists.txt</td></tr>
+<tr><td>target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}")</td></tr>
+</table>
+</details>
+
+<p><code>TutorialConfig.h.in</code> 是要配置的输入文件。当在 <code>CMakeLists.txts</code>中 调用 <code>configure_file()</code>，变量 <code>@Tutorial_VERSION_MAJOR@</code> 和 <code>@Tutorial_VERSION_MINOR@</code> 会被替换到 TutorialConfig.h 中项目对应版本号。</p>
+<details><summary>TODO 10: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 10: TutorialConfig.h.in</td></tr>
+<tr><td>#define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@</td></tr>
+<tr><td>#define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@</td></tr>
+</table>
+</details>
+
+<p>接下来，我们修改 <code>tutorial.cxx</code> 文件，引入配置头文件 <code>TutorialConfig.h</code>。</p>
+<details><summary>TODO 11: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 11: Tutorial。cxx</td></tr>
+<tr><td>#include "TutorialConfig.h"</td></tr>
+</table>
+</details>
+
+<p>最后，在 <code>tutorial.cxx</code> 中输出可执行程序的名字和版本号：</p>
+<details><summary>TODO 12: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 12: Tutorial。cxx</td></tr>
+<tr><td>
+if (argc < 2) {
+    // report version
+    std::cout << argv[0] << " Version " << Tutorial_VERSION_MAJOR << "".
+            << Tutorial_VERSION_MAJOR << std::endl;
+    std::cout << "Usage: " << argv[0] << " number" << std::endl;
+    return 1;
+}
+</td></tr>
+</table>
+</details>
       
     </div>
     <footer class="article-footer">
