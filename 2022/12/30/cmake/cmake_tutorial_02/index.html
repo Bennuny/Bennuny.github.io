@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>步骤二：添加库 | keep curious, keep move.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="步骤二：添加库至此，我们已经知道了如何使用CMake创建一个基本项目。在这一步，我们将学习如何在创建库以及如何在项目中使用，也将了解到如何选择使用我们的库。 练习一：创建库要在CMake中添加库，使用 add_library() 命令并指定打包到库里的源文件。 我们用一个或者多个子目录来组织项目，而不是将所有源文件放到一个目录下。这里为我们库创建一个特定的子目录。我们增加一个新得 CMakeLis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="步骤二：添加库">
+<meta property="og:url" content="https://bennuny.github.io/2022/12/30/cmake/cmake_tutorial_02/index.html">
+<meta property="og:site_name" content="keep curious, keep move.">
+<meta property="og:description" content="步骤二：添加库至此，我们已经知道了如何使用CMake创建一个基本项目。在这一步，我们将学习如何在创建库以及如何在项目中使用，也将了解到如何选择使用我们的库。 练习一：创建库要在CMake中添加库，使用 add_library() 命令并指定打包到库里的源文件。 我们用一个或者多个子目录来组织项目，而不是将所有源文件放到一个目录下。这里为我们库创建一个特定的子目录。我们增加一个新得 CMakeLis">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-30T11:42:22.000Z">
+<meta property="article:modified_time" content="2023-01-03T11:56:18.902Z">
+<meta property="article:author" content="Ben">
+<meta property="article:tag" content="game, tech">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="keep curious, keep move." type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">keep curious, keep move.</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://bennuny.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-cmake/cmake_tutorial_02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/12/30/cmake/cmake_tutorial_02/" class="article-date">
+  <time class="dt-published" datetime="2022-12-30T11:42:22.000Z" itemprop="datePublished">2022-12-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      步骤二：添加库
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="步骤二：添加库"><a href="#步骤二：添加库" class="headerlink" title="步骤二：添加库"></a>步骤二：添加库</h2><p>至此，我们已经知道了如何使用CMake创建一个基本项目。在这一步，我们将学习如何在创建库以及如何在项目中使用，也将了解到如何选择使用我们的库。</p>
+<h2 id="练习一：创建库"><a href="#练习一：创建库" class="headerlink" title="练习一：创建库"></a>练习一：创建库</h2><p>要在CMake中添加库，使用 <code>add_library()</code> 命令并指定打包到库里的源文件。</p>
+<p>我们用一个或者多个子目录来组织项目，而不是将所有源文件放到一个目录下。这里为我们库创建一个特定的子目录。我们增加一个新得 <code>CMakeLists.txt</code> 文件和一个或多个源文件。 在 <code>CMakeLists.txt</code> 文件头部，使用 <code>add_subdirectory()</code> 命令增加要构建的子目录。</p>
+<p>当库构建成功，通过 <code>target_include_directories()</code> 和 <code>target_link_libraries()</code> 命令链接到可执行程序。</p>
+<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>创建和使用库</p>
+<h3 id="资源列表"><a href="#资源列表" class="headerlink" title="资源列表"></a>资源列表</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library">add_library()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/add_subdirectory.html#command:add_subdirectory">add_subdirectory()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/PROJECT_SOURCE_DIR.html#variable:PROJECT_SOURCE_DIR">PROJECT_SOURCE_DIR</a></li>
+</ul>
+<h3 id="编辑文件"><a href="#编辑文件" class="headerlink" title="编辑文件"></a>编辑文件</h3><ul>
+<li>CMakeLists.txt</li>
+<li>tutorial.cxx</li>
+<li>MathFunctions&#x2F;CMakeLists.txt</li>
+</ul>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>这次练习，我们实现计算一个数字平方根的方法库，并将库添加到项目里。代码中使用库替代由编译器提供的平方根计算方法。</p>
+<p>本教程中个，我们把库放在指定的MathFunctions子目录下。这个路径包含了一个头文件 <code>MathFunctions.h</code> 和 源文件 <code>mysqrt.cxx</code>。我们不需要修改这些文件，源文件有个方法 mysqrt 提供了编译器 <code>sqrt</code> 方法一样的功能。</p>
+<p>在路径 <code>Help/guide/tutorial/Step2</code> 目录下，完成 <code>TODO 1</code> 到 <code>TODO 6</code>.<br>首先，在 <code>MathFunctions</code> 子目录的 <code>CMakeLists.txt</code> 添加一行。<br>然后，编辑上层的 <code>CMakeLists.txt</code> 文件。<br>最后，在 <code>tutorial.cxx</code> 中使用新创建的 <code>MathFunctions</code> 库。</p>
+<h3 id="构建运行"><a href="#构建运行" class="headerlink" title="构建运行"></a>构建运行</h3><p>使用 <code>cmake</code> 命令或<code>cmake-gui</code> 配置项目，然后构建项目。</p>
+<p>下面是命令行示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir Step2_build</span><br><span class="line">cd Step2_build</span><br><span class="line">cmake ../Step2</span><br><span class="line">cmake --build .</span><br></pre></td></tr></table></figure>
+
+<p>使用新构建出的 <code>Tutorial</code> 并确保仍然可以计算一个数字的平方根。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>在 <code>MathFuntions</code> 子目录下的 <code>CMakeLists.txt</code>文件，我们使用命令 <code>add_library()</code> 创建一个名字为 <code>MathFuntions</code> 的库，库的源文件作为 <code>add_library</code> 的一个参数。看起来如下：</p>
+<details><summary>TODO1: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 1: MathFuncions/CMakeLists.txt</td></tr>
+<tr><td>add_library(MathFuntions mysqrt.cxx)</td></tr>
+</table>
+</details>
+
+<p>为了使用新库，我们在 <code>CMakeLists.txt</code> 文件最上部添加 <code>add_subdirectory()</code> 用来构建库：</p>
+<details><summary>TODO2: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 1: CMakeLists.txt</td></tr>
+<tr><td>add_subdirectory(MathFunctions)</td></tr>
+</table>
+</details>
+
+<p>接下来，使用 <code>target_link_libraries()</code> 方法将库链接到执行目标程序：</p>
+<details><summary>TODO3: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 1: CMakeLists.txt</td></tr>
+<tr><td>target_link_libraries(Tutorial PUBLIC **MathFunctions**)</td></tr>
+</table>
+</details>
+
+<p>最后，我们需要指定库的头文件位置，修改 <code>target_include_directories()</code> 增加 <code>MathFunctions</code> 子目录为头文件路径，以便找到 <code>MathFuntions.h</code> 头文件。</p>
+<details><summary>TODO4: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 4: CMakeLists.txt</td></tr>
+<tr><td>
+target_include_directories(Tutorial PUBLIC
+                           "${PROJECT_BINARY_DIR}"
+                           "${PROJECT_SOURCE_DIR}/MathFunctions"
+                           )
+</td></tr>
+</table>
+</details>
+
+<p>现在，使用我们的库。在 <code>tutorial.cxx</code> 中引入头文件 <code>MathFunctions.h</code>。</p>
+<details><summary>TODO5: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 5: tutorial.cxx</td></tr>
+<tr><td>#include "MathFuncions.h"</td></tr>
+</table>
+</details>
+
+<p>然后，使用库内的方法 <code>mysqrt</code> 替代 <code>sqrt</code>.</p>
+<details><summary>TODO6: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 6: tutorial.cxx</td></tr>
+<tr><td>const double outputValue = mysqrt(inputValue)</td></tr>
+</table>
+</details>
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bennuny.github.io/2022/12/30/cmake/cmake_tutorial_02/" data-id="clcg66t4k0000bkgyc0g42i6c" data-title="步骤二：添加库" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/12/27/cmake/cmake_tutorial_01/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">步骤一：起点</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/" rel="tag">cmake</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/cmake/" style="font-size: 10px;">cmake</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/12/30/cmake/cmake_tutorial_02/">步骤二：添加库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/27/cmake/cmake_tutorial_01/">步骤一：起点</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/27/cmake/cmake_tutorial/">CMake 教程 | CMake Tutorial</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/26/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Ben<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

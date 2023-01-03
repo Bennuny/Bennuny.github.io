@@ -14,7 +14,7 @@
 <meta property="og:description" content="步骤一：起点应该从哪里开始学习CMake？这篇教程介绍一下CMake的基本语法、命令和变量。了解这些概念之后，我们通过三个练习创建一个简单的CMake项目。 这个教程的每个练习会先给出练习的背景信息。然后给出一个目标和有帮助资源列表。在 编辑文件 部分下的每个文件在 Step1 目录下，包含一个或多个 TODO 注释。 每个 TODO 注释代表需要添加或者修改一行或两行代码。这些 TODO 要按顺">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-27T12:33:19.000Z">
-<meta property="article:modified_time" content="2022-12-30T04:09:40.063Z">
+<meta property="article:modified_time" content="2022-12-30T06:18:45.944Z">
 <meta property="article:author" content="Ben">
 <meta property="article:tag" content="cmake">
 <meta name="twitter:card" content="summary">
@@ -186,9 +186,9 @@
 <h3 id="目标-2"><a href="#目标-2" class="headerlink" title="目标"></a>目标</h3><p>定义并报告项目版本号。</p>
 <h3 id="资源列表-2"><a href="#资源列表-2" class="headerlink" title="资源列表"></a>资源列表</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION_MAJOR.html#variable:%3CPROJECT-NAME%3E_VERSION_MAJOR"><code>&lt;PROJECT-NAME&gt;_VERSION_MAJOR</code></a></li>
-<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION_MINOR.html#variable:%3CPROJECT-NAME%3E_VERSION_MINOR"><PROJECT-NAME>_VERSION_MINOR</a></li>
-<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/configure_file.html#command:configure_file">configure_file()</a></li>
-<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION_MINOR.html#variable:%3CPROJECT-NAME%3E_VERSION_MINOR"><code>&lt;PROJECT-NAME&gt;_VERSION_MINOR</code></a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/configure_file.html#command:configure_file"><code>configure_file()</code></a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories"><code>target_include_directories()</code></a></li>
 </ul>
 <h3 id="编辑文件-2"><a href="#编辑文件-2" class="headerlink" title="编辑文件"></a>编辑文件</h3><ul>
 <li>CMakeLists.txt</li>
@@ -235,7 +235,7 @@
 
 <p>接下来，我们修改 <code>tutorial.cxx</code> 文件，引入配置头文件 <code>TutorialConfig.h</code>。</p>
 <details><summary>TODO 11: Click to show/hide answer</summary>
-<table><tr><td bgcolor=blue>TODO 11: Tutorial。cxx</td></tr>
+<table><tr><td bgcolor=blue>TODO 11: Tutorial.cxx</td></tr>
 <tr><td>#include "TutorialConfig.h"</td></tr>
 </table>
 </details>
@@ -268,6 +268,15 @@ if (argc < 2) {
   
     
 <nav id="article-nav">
+  
+    <a href="/2022/12/30/cmake/cmake_tutorial_02/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          步骤二：添加库
+        
+      </div>
+    </a>
   
   
     <a href="/2022/12/27/cmake/cmake_tutorial/" id="article-nav-older" class="article-nav-link-wrap">
@@ -324,6 +333,10 @@ if (argc < 2) {
       <ul>
         
           <li>
+            <a href="/2022/12/30/cmake/cmake_tutorial_02/">步骤二：添加库</a>
+          </li>
+        
+          <li>
             <a href="/2022/12/27/cmake/cmake_tutorial_01/">步骤一：起点</a>
           </li>
         
@@ -348,7 +361,7 @@ if (argc < 2) {
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2022 Ben<br>
+      &copy; 2023 Ben<br>
       Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

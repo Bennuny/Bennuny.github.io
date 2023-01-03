@@ -72,6 +72,123 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-cmake/cmake_tutorial_02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/12/30/cmake/cmake_tutorial_02/" class="article-date">
+  <time class="dt-published" datetime="2022-12-30T11:42:22.000Z" itemprop="datePublished">2022-12-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/12/30/cmake/cmake_tutorial_02/">步骤二：添加库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="步骤二：添加库"><a href="#步骤二：添加库" class="headerlink" title="步骤二：添加库"></a>步骤二：添加库</h2><p>至此，我们已经知道了如何使用CMake创建一个基本项目。在这一步，我们将学习如何在创建库以及如何在项目中使用，也将了解到如何选择使用我们的库。</p>
+<h2 id="练习一：创建库"><a href="#练习一：创建库" class="headerlink" title="练习一：创建库"></a>练习一：创建库</h2><p>要在CMake中添加库，使用 <code>add_library()</code> 命令并指定打包到库里的源文件。</p>
+<p>我们用一个或者多个子目录来组织项目，而不是将所有源文件放到一个目录下。这里为我们库创建一个特定的子目录。我们增加一个新得 <code>CMakeLists.txt</code> 文件和一个或多个源文件。 在 <code>CMakeLists.txt</code> 文件头部，使用 <code>add_subdirectory()</code> 命令增加要构建的子目录。</p>
+<p>当库构建成功，通过 <code>target_include_directories()</code> 和 <code>target_link_libraries()</code> 命令链接到可执行程序。</p>
+<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>创建和使用库</p>
+<h3 id="资源列表"><a href="#资源列表" class="headerlink" title="资源列表"></a>资源列表</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library">add_library()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/add_subdirectory.html#command:add_subdirectory">add_subdirectory()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/PROJECT_SOURCE_DIR.html#variable:PROJECT_SOURCE_DIR">PROJECT_SOURCE_DIR</a></li>
+</ul>
+<h3 id="编辑文件"><a href="#编辑文件" class="headerlink" title="编辑文件"></a>编辑文件</h3><ul>
+<li>CMakeLists.txt</li>
+<li>tutorial.cxx</li>
+<li>MathFunctions&#x2F;CMakeLists.txt</li>
+</ul>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>这次练习，我们实现计算一个数字平方根的方法库，并将库添加到项目里。代码中使用库替代由编译器提供的平方根计算方法。</p>
+<p>本教程中个，我们把库放在指定的MathFunctions子目录下。这个路径包含了一个头文件 <code>MathFunctions.h</code> 和 源文件 <code>mysqrt.cxx</code>。我们不需要修改这些文件，源文件有个方法 mysqrt 提供了编译器 <code>sqrt</code> 方法一样的功能。</p>
+<p>在路径 <code>Help/guide/tutorial/Step2</code> 目录下，完成 <code>TODO 1</code> 到 <code>TODO 6</code>.<br>首先，在 <code>MathFunctions</code> 子目录的 <code>CMakeLists.txt</code> 添加一行。<br>然后，编辑上层的 <code>CMakeLists.txt</code> 文件。<br>最后，在 <code>tutorial.cxx</code> 中使用新创建的 <code>MathFunctions</code> 库。</p>
+<h3 id="构建运行"><a href="#构建运行" class="headerlink" title="构建运行"></a>构建运行</h3><p>使用 <code>cmake</code> 命令或<code>cmake-gui</code> 配置项目，然后构建项目。</p>
+<p>下面是命令行示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir Step2_build</span><br><span class="line">cd Step2_build</span><br><span class="line">cmake ../Step2</span><br><span class="line">cmake --build .</span><br></pre></td></tr></table></figure>
+
+<p>使用新构建出的 <code>Tutorial</code> 并确保仍然可以计算一个数字的平方根。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>在 <code>MathFuntions</code> 子目录下的 <code>CMakeLists.txt</code>文件，我们使用命令 <code>add_library()</code> 创建一个名字为 <code>MathFuntions</code> 的库，库的源文件作为 <code>add_library</code> 的一个参数。看起来如下：</p>
+<details><summary>TODO1: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 1: MathFuncions/CMakeLists.txt</td></tr>
+<tr><td>add_library(MathFuntions mysqrt.cxx)</td></tr>
+</table>
+</details>
+
+<p>为了使用新库，我们在 <code>CMakeLists.txt</code> 文件最上部添加 <code>add_subdirectory()</code> 用来构建库：</p>
+<details><summary>TODO2: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 1: CMakeLists.txt</td></tr>
+<tr><td>add_subdirectory(MathFunctions)</td></tr>
+</table>
+</details>
+
+<p>接下来，使用 <code>target_link_libraries()</code> 方法将库链接到执行目标程序：</p>
+<details><summary>TODO3: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 1: CMakeLists.txt</td></tr>
+<tr><td>target_link_libraries(Tutorial PUBLIC **MathFunctions**)</td></tr>
+</table>
+</details>
+
+<p>最后，我们需要指定库的头文件位置，修改 <code>target_include_directories()</code> 增加 <code>MathFunctions</code> 子目录为头文件路径，以便找到 <code>MathFuntions.h</code> 头文件。</p>
+<details><summary>TODO4: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 4: CMakeLists.txt</td></tr>
+<tr><td>
+target_include_directories(Tutorial PUBLIC
+                           "${PROJECT_BINARY_DIR}"
+                           "${PROJECT_SOURCE_DIR}/MathFunctions"
+                           )
+</td></tr>
+</table>
+</details>
+
+<p>现在，使用我们的库。在 <code>tutorial.cxx</code> 中引入头文件 <code>MathFunctions.h</code>。</p>
+<details><summary>TODO5: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 5: tutorial.cxx</td></tr>
+<tr><td>#include "MathFuncions.h"</td></tr>
+</table>
+</details>
+
+<p>然后，使用库内的方法 <code>mysqrt</code> 替代 <code>sqrt</code>.</p>
+<details><summary>TODO6: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 6: tutorial.cxx</td></tr>
+<tr><td>const double outputValue = mysqrt(inputValue)</td></tr>
+</table>
+</details>
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bennuny.github.io/2022/12/30/cmake/cmake_tutorial_02/" data-id="clcg66t4k0000bkgyc0g42i6c" data-title="步骤二：添加库" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-cmake/cmake_tutorial_01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/12/27/cmake/cmake_tutorial_01/" class="article-date">
@@ -184,9 +301,9 @@
 <h3 id="目标-2"><a href="#目标-2" class="headerlink" title="目标"></a>目标</h3><p>定义并报告项目版本号。</p>
 <h3 id="资源列表-2"><a href="#资源列表-2" class="headerlink" title="资源列表"></a>资源列表</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION_MAJOR.html#variable:%3CPROJECT-NAME%3E_VERSION_MAJOR"><code>&lt;PROJECT-NAME&gt;_VERSION_MAJOR</code></a></li>
-<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION_MINOR.html#variable:%3CPROJECT-NAME%3E_VERSION_MINOR"><PROJECT-NAME>_VERSION_MINOR</a></li>
-<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/configure_file.html#command:configure_file">configure_file()</a></li>
-<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION_MINOR.html#variable:%3CPROJECT-NAME%3E_VERSION_MINOR"><code>&lt;PROJECT-NAME&gt;_VERSION_MINOR</code></a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/configure_file.html#command:configure_file"><code>configure_file()</code></a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories"><code>target_include_directories()</code></a></li>
 </ul>
 <h3 id="编辑文件-2"><a href="#编辑文件-2" class="headerlink" title="编辑文件"></a>编辑文件</h3><ul>
 <li>CMakeLists.txt</li>
@@ -233,7 +350,7 @@
 
 <p>接下来，我们修改 <code>tutorial.cxx</code> 文件，引入配置头文件 <code>TutorialConfig.h</code>。</p>
 <details><summary>TODO 11: Click to show/hide answer</summary>
-<table><tr><td bgcolor=blue>TODO 11: Tutorial。cxx</td></tr>
+<table><tr><td bgcolor=blue>TODO 11: Tutorial.cxx</td></tr>
 <tr><td>#include "TutorialConfig.h"</td></tr>
 </table>
 </details>
@@ -301,7 +418,7 @@ if (argc < 2) {
 <li>练习三：添加版本号和配置头文件</li>
 </ul>
 </li>
-<li>步骤二：添加库<ul>
+<li><a href="(../../../../../2022/12/30/cmake/cmake_tutorial_02/index.html)">步骤二：添加库</a><ul>
 <li>练习一：创建一个库</li>
 <li>练习二：使创建的库为可选</li>
 </ul>
@@ -443,6 +560,10 @@ if (argc < 2) {
       <ul>
         
           <li>
+            <a href="/2022/12/30/cmake/cmake_tutorial_02/">步骤二：添加库</a>
+          </li>
+        
+          <li>
             <a href="/2022/12/27/cmake/cmake_tutorial_01/">步骤一：起点</a>
           </li>
         
@@ -467,7 +588,7 @@ if (argc < 2) {
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2022 Ben<br>
+      &copy; 2023 Ben<br>
       Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
