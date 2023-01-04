@@ -14,7 +14,7 @@
 <meta property="og:description" content="步骤二：添加库至此，我们已经知道了如何使用CMake创建一个基本项目。在这一步，我们将学习如何在创建库以及如何在项目中使用，也将了解到如何选择使用我们的库。 练习一：创建库要在CMake中添加库，使用 add_library() 命令并指定打包到库里的源文件。 我们用一个或者多个子目录来组织项目，而不是将所有源文件放到一个目录下。这里为我们库创建一个特定的子目录。我们增加一个新得 CMakeLis">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-30T11:42:22.000Z">
-<meta property="article:modified_time" content="2023-01-03T11:56:18.902Z">
+<meta property="article:modified_time" content="2023-01-04T07:26:42.886Z">
 <meta property="article:author" content="Ben">
 <meta property="article:tag" content="game, tech">
 <meta name="twitter:card" content="summary">
@@ -169,13 +169,122 @@ target_include_directories(Tutorial PUBLIC
 </details>
 
 
+<h2 id="练习二：使创建的库为可选"><a href="#练习二：使创建的库为可选" class="headerlink" title="练习二：使创建的库为可选"></a>练习二：使创建的库为可选</h2><p>现在设置我们的数学方法库为可选。虽然对于教程来说，确实没必要这样做，但对于大型项目来说，这是经常会遇到的情况。</p>
+<p>CMake可以使用 <code>option()</code> 方法设置库为可选。这为用户提供了一个变量，用户可以在配置CMake构建时更改该变量。设置将存储在缓存中，因此用户不需要每次在构建目录内运行CMake时重新设置。</p>
+<h3 id="目标-1"><a href="#目标-1" class="headerlink" title="目标"></a>目标</h3><p>添加不使用 <code>MathFunctions</code> 的构建选项。</p>
+<h3 id="资源列表-1"><a href="#资源列表-1" class="headerlink" title="资源列表"></a>资源列表</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/if.html#command:if">if()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/list.html#command:list">list()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/option.html#command:option">option()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/configure_file.html#command:configure_file">cmakedefine</a></li>
+</ul>
+<h3 id="编辑文件-1"><a href="#编辑文件-1" class="headerlink" title="编辑文件"></a>编辑文件</h3><ul>
+<li><code>CMakeList.txt</code></li>
+<li><code>tutorial.cxx</code></li>
+<li><code>TutorialConfig.h.in</code></li>
+</ul>
+<h3 id="开始-1"><a href="#开始-1" class="headerlink" title="开始"></a>开始</h3><p>在练习一的基础上，完成 <code>TODO 7</code> 到 <code>TODO 13</code>。<br>首先在 <code>CMakeLists.txt</code> 文件前使用 <code>option()</code> 方法定义 <code>USE_MYMATH</code> 变量。在相同文件下，使用option来决定是否使用 <code>MathFunctions</code> 库来构建项目。</p>
+<p>然后，更新 <code>tutorial.cxx</code> 和 <code>TutorialConfig.h.in</code> 来使用 <code>USE_MYMATH</code> 宏。</p>
+<h3 id="构建运行-1"><a href="#构建运行-1" class="headerlink" title="构建运行"></a>构建运行</h3><p>在练习一中已经配置好了构建目录，可以用以下命令重新构建：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ../Step2_build</span><br><span class="line">cmake --build .</span><br></pre></td></tr></table></figure>
+<p>然后，运行 <code>Tutorial</code> 执行程序，输入若干个数字确认结果仍然正确。</p>
+<p>现在我们修改 <code>USE_MYMATH</code> 为 <code>OFF</code>。最简单的方法使用 <code>cmake-gui</code> 或使用命令行 <code>cmake</code>。或者，如果你也可以通过命令行修改参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake ../Step2 -DUSE_MYMATH=OFF</span><br></pre></td></tr></table></figure>
 
+<p>接下来，重新构建项目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake --build .</span><br></pre></td></tr></table></figure>
 
+<p>然后，设置 <code>USE_MYMATH</code> 为 <code>OFF</code>，重新运行程序确保运行成功。 <code>sqrt</code> 和 <code>mysqrt</code> 哪个方法的结果更正确？</p>
+<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>第一步是在 <code>CMakeLists.txt</code> 文件顶部增加选项。在 <code>cmake-gui</code> 和 <code>cmake</code> 中，option会设置默认值为 <code>ON</code>，用户可以修改变量值。</p>
+<details><summary>TODO 7: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 7: CMakeLists.txt</td></tr>
+<tr><td>
+option(USE_MYMATH "Use tutorial provided math implementation" ON)
+</td></tr>
+</table>
+</details>
 
+<p>接下来，可选择性的构建和链接 <code>MathFunctions</code> 库。</p>
+<p>首先为我们的项目可选库构建 <code>list()</code>，目前只有 <code>MathFunctions</code>。列表命名为 <code>EXTRA_LIBS</code>。<br>类似的，对于可选头文件构建列表 <code>list()</code> 命名为 <code>EXTRA_INCLUDES</code>。在列表中，使用 <code>APPEND</code> 追加头文件路径到需要的库中。</p>
+<p>然后，使用 <code>if()</code> 命令行判断 <code>USE_MYMATH</code> 的状态。在 <code>if()</code> 代码块内，将练习一的 <code>add_subdirectories</code> 命令作为 <code>list()</code> 命令的可选项。</p>
+<p>当 <code>USE_MYMATH</code> 为 <code>ON</code>，将生成列表并添加到项目中。当 <code>USE_MYMATH</code>为 <code>OFF</code>，列表为空。使用次策略，允许用户切换 <code>USE_MYMATH</code> 来操作构建中使用的库。</p>
+<p><code>CMakeLists.txt</code>文件修改后如下：</p>
+<details><summary>TODO 8: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 8: CMakeLists.txt</td></tr>
+<tr><td>
+if (USE_MYMATH)
+    add_subdirectory(MathFunctions)
+    list(APPEND EXTRA_LIBS MathFunctions)
+    list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/MathFunctions")
+endif()
+</td></tr>
+</table>
+</details>
 
+<p>现在，我们有了这两个列表，我们需要修改 <code>target_link_libraries</code> 和 <code>target_include_libraries</code> 来使用他们。</p>
+<p>对于 <code>target_link_libraries()</code>，使用 <code>EXTRA_LIBS</code> 替代库的名字，如下所示：</p>
+<details><summary>TODO 9: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 9: CMakeLists.txt</td></tr>
+<tr><td>
+target_link_libraries(Tutorial PUBLIC ${EXTRA_LIBS})
+</td></tr>
+</table>
+</details>
 
+<p>对于 <code>target_include_directories()</code> 和 <code>EXTRA_INCLUDES</code> 是一样的：</p>
+<details><summary>TODO 10: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 10: CMakeLists.txt</td></tr>
+<tr><td>
+target_include_libraries(Tutorial PUBLIC 
+                        "${PROJECT_BINARY_DIR}"
+                        ${EXTRA_INCLUDES})
+</td></tr>
+</table>
+</details>
 
+<p>注意：这些处理模块的经典方法。在步骤三中，将介绍现代处理方法。</p>
+<p>对应的修改源码中的使用。首先在 <code>tutorial.cxx</code>中，通过 <code>USE_MYMATH</code> 宏来引入 <code>MathFunctions.h</code>头文件。</p>
+<details><summary>TODO 11: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 11: tutorial.cxx</td></tr>
+<tr><td>
+#ifdef USE_MYMATH
+    #include "MathFunctions.h"
+#endif
+</td></tr>
+</table>
+</details>
 
+<p>通过 <code>USE_MYMATH</code> 来定义使用哪个计算平方根的方法：</p>
+<details><summary>TODO 12: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 12: tutorial.cxx</td></tr>
+<tr><td>
+#ifdef USE_MYMATH
+    const double outputValue = mysqrt(inputValue);
+#else
+    const double outputValue = sqrt(inputValue);
+#endif
+</td></tr>
+</table>
+</details>
+
+<p>在 <code>TutorialConfig.h.in</code> 中引入 <code>USE_MYMATH</code>，以便于源码引用。</p>
+<details><summary>TODO 13: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 13: TutorialConfig.h.in</td></tr>
+<tr><td>
+#cmakedefine USE_MYMATH
+</td></tr>
+</table>
+</details>
+
+<p>以上修改都完成后，无论是否使用这个库都是可选的。</p>
+<h3 id="加分问题"><a href="#加分问题" class="headerlink" title="加分问题"></a>加分问题</h3><p>为什么在 USE_MYMATH 选项后配置 TutorialConfig.h.in 文件很重要？如果两者颠倒会怎么样？</p>
+<h3 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h3><details><summary>Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 13: TutorialConfig.h.in</td></tr>
+<tr><td>
+在后面配置，是因为 `TutorialConfig.h` 使用了 `USE_MYMATH` 的值。如果在 `option()` 之前配置文件，`USE_MYMATH`的值会和预期不符。
+</td></tr>
+</table>
+</details>
       
     </div>
     <footer class="article-footer">
