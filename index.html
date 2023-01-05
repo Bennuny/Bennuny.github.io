@@ -72,6 +72,105 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-cmake/cmake_tutorial_03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/05/cmake/cmake_tutorial_03/" class="article-date">
+  <time class="dt-published" datetime="2023-01-05T09:18:24.000Z" itemprop="datePublished">2023-01-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/01/05/cmake/cmake_tutorial_03/">添加库的使用需求</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="练习一：添加库的是使用需求"><a href="#练习一：添加库的是使用需求" class="headerlink" title="练习一：添加库的是使用需求"></a>练习一：添加库的是使用需求</h2><p>通过目标参数的使用要求可以更好的控制库或执行程序的链接和头文件引入，同时也可以对CMake中目标的传递属性进行更多的控制。用到的主要命令如下：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_compile_definitions.html#command:target_compile_definitions">target_compile_definitions()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_compile_options.html#command:target_compile_options">target_compile_options()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_link_directories.html#command:target_link_directories">target_link_directories()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_link_options.html#command:target_link_options">target_link_options()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_precompile_headers.html#command:target_precompile_headers">target_precompile_headers()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_sources.html#command:target_sources">target_sources()</a></li>
+</ul>
+<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>增加库的使用要求</p>
+<h3 id="资源列表"><a href="#资源列表" class="headerlink" title="资源列表"></a>资源列表</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/variable/CMAKE_CURRENT_SOURCE_DIR.html#variable:CMAKE_CURRENT_SOURCE_DIR">CMAKE_CURRENT_SOURCE_DIR</a></li>
+</ul>
+<h3 id="编辑文件"><a href="#编辑文件" class="headerlink" title="编辑文件"></a>编辑文件</h3><ul>
+<li><code>MathFunctions/CMakeLists.txt</code></li>
+<li><code>CMakeLists.txt</code></li>
+</ul>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>本次练习，我们使用CMake的现代方法重构上一步的代码。我们让库定义它自身的使用需求，以便根据需要将它们传递给其他目标。这种情形下，<code>MathFunctions</code>将指定自己需要用到的头文件目录。然后，使用到它的<code>Tutorial</code>只需要链接到<code>MathFunctions</code>，而不需要关心额外的头文件目录。</p>
+<p>需要用到的代码在<code>Step3</code>目录下。本地练习，完成 <code>TODO 1</code> 到 <code>TODO 3</code>。</p>
+<p>首先，在<code>MathFunctions/CMakelists.txt</code> 中调用 <code>target_include_directories()</code>. 注意，<code>CMAKE_CURRENT_SOURCE_DIR</code> 是当前正在处理的源代码路径。</p>
+<p>然后，更新 <code>target_include_directories()</code> 在<code>CMakeLists.txt</code>中的调用。</p>
+<h3 id="构建运行"><a href="#构建运行" class="headerlink" title="构建运行"></a>构建运行</h3><p>创建新目录<code>Step3_build</code>，使用<code>cmake</code>或<code>cmake-gui</code>配置项目，然后使用选择工具构建项目。下面是使用命令行构建项目示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir Step3_build</span><br><span class="line">cd Step3_build</span><br><span class="line">cmake ../Step3</span><br><span class="line">cmake --build .</span><br></pre></td></tr></table></figure>
+<p>然后，使用最新构建的<code>Tutorial</code>，确认它可以得到我们期望的结果。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>让我们重构上一步代码，来使用CMake的现代化使用需求方法。</p>
+<p>我们希望声明，任何链接到MathFunctions的库或运行程序都包含当前源码目录，而<code>MathFunctions</code>本身不需要包含。我们可以使用 <code>INTERFACE</code> 表示使用需求。记住 <code>INTERFACE</code> 意味着使用者需要而本身不需要。</p>
+<p>在 <code>MathFunctions/CMakeLists.txt</code> 文件后面，使用带有INTERFACE关键字的 <code> [target_inlcude_directories()](https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories)</code> 方法，如下：</p>
+<details><summary>TODO 1: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 1: MathFunctions/CMakeLists.txt</td></tr>
+<tr><td>
+target_include_directories(MathFunctions
+                           INTERFACE
+                           ${CMAKE_CURRENT_SOURCE_DIR})
+</td></tr>
+</table>
+</details>
+
+<p>既然我们已经指定了 <code>MathFunctions</code> 的使用要求，我们可以 <code>CMakeLists.txt</code> 文件头部安全的删除 EXTRA_INCLURE变量的使用了。</p>
+<details><summary>TODO 2: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 2: CMakeLists.txt</td></tr>
+<tr><td>
+if(USE_MYMATH)
+    add_subdirectory(MathFunctions)
+    list(APPEND EXTRA_LIBS MathFunctions)
+endif()
+</td></tr>
+</table>
+</details>
+
+<details><summary>TODO 3: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 3: CMakeLists.txt</td></tr>
+<tr><td>
+target_include_directories(Tutorial PUBLIC
+                           "${PROJECT_BINARY_DIR}"
+                           )
+</td></tr>
+</table>
+</details>
+
+<p>使用这种方法，我们的可执行程序目标引用库只需要通过库的名称调用 <code>target_link_libraries()</code> 方法。在大型项目中，使用经典方法手动指定库依赖项会很快使项目变得非常复杂。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bennuny.github.io/2023/01/05/cmake/cmake_tutorial_03/" data-id="clcj4rjfx0000xogyhzcjh18z" data-title="添加库的使用需求" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-cmake/cmake_tutorial_02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/12/30/cmake/cmake_tutorial_02/" class="article-date">
@@ -527,12 +626,12 @@ if (argc < 2) {
 <li>练习三：添加版本号和配置头文件</li>
 </ul>
 </li>
-<li><a href="(../../../../../2022/12/30/cmake/cmake_tutorial_02/index.html)">步骤二：添加库</a><ul>
+<li><a href="../../../../../2022/12/30/cmake/cmake_tutorial_02/index.html">步骤二：添加库</a><ul>
 <li>练习一：创建一个库</li>
 <li>练习二：使创建的库为可选</li>
 </ul>
 </li>
-<li>步骤三：添加库的使用需求<ul>
+<li><a href="../../../../../2023/01/05/cmake/cmake_tutorial_03/index.html">步骤三：添加库的使用需求</a><ul>
 <li>练习一：添加库的使用需求</li>
 </ul>
 </li>
@@ -656,7 +755,7 @@ if (argc < 2) {
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a></li></ul>
     </div>
   </div>
 
@@ -667,6 +766,10 @@ if (argc < 2) {
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2023/01/05/cmake/cmake_tutorial_03/">添加库的使用需求</a>
+          </li>
         
           <li>
             <a href="/2022/12/30/cmake/cmake_tutorial_02/">步骤二：添加库</a>
