@@ -72,6 +72,106 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-cmake/cmake_tutorial_04" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/09/cmake/cmake_tutorial_04/" class="article-date">
+  <time class="dt-published" datetime="2023-01-09T03:28:42.000Z" itemprop="datePublished">2023-01-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/01/09/cmake/cmake_tutorial_04/">添加生成器表达式 | Adding Generator Expressions</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)">生成器表达式</a>在构建系统生成期间进行评估，以生成特定于每个构建配置的信息。</p>
+<p><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)">生成器表达式</a>可以应用于项目的许多属性，像：<a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/prop_tgt/LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES">LINK_LIBRARIES</a>, <a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/prop_tgt/INCLUDE_DIRECTORIES.html#prop_tgt:INCLUDE_DIRECTORIES">INCLUDE_DIRECTORIES</a>, <a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/prop_tgt/COMPILE_DEFINITIONS.html#prop_tgt:COMPILE_DEFINITIONS">COMPILE_DEFINITIONS</a>以及其他。也可以在命令填充这些属性时使用。像：<a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a>, <a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a>, <a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_compile_definitions.html#command:target_compile_definitions">target_compile_definitions()</a>等。</p>
+<p><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)">生成器表达式</a>可以用来启用条件链接、编译时使用的条件定义、条件包含目录等。这些条件可能基于构建配置、目标属性、平台信息或任何其他可查询信息。</p>
+<p>有不同类型的<a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)">生成器表达式</a>，包含逻辑表达式、信息表达式和输出表达式等。</p>
+<p>逻辑表达式用于创建条件输出。基本表达式是0和1的表达式。 $&lt;0:…&gt;生成空字符串，$&lt;1:…&gt;生成…的内容，表达式可以嵌套使用。</p>
+<h2 id="练习一：使用接口库设置C-标准"><a href="#练习一：使用接口库设置C-标准" class="headerlink" title="练习一：使用接口库设置C++标准"></a>练习一：使用接口库设置C++标准</h2><p>使用<a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)">生成器表达式</a>之前，我们重构现有代码以使用 <code>INTERFACE</code> 库。在下一步中使用该库演示生成器表达式的常见用法。</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>添加<code>INTERFACE</code>库以指定所需C++标准。</p>
+<h2 id="资源列表"><a href="#资源列表" class="headerlink" title="资源列表"></a>资源列表</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library">add_library()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_compile_features.html#command:target_compile_features">target_compile_features()</a></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a></li>
+</ul>
+<h2 id="编辑文件"><a href="#编辑文件" class="headerlink" title="编辑文件"></a>编辑文件</h2><ul>
+<li><code>CMakeLists.txt</code></li>
+<li><code>MathFunctions/CMakeLists.txt</code></li>
+</ul>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>此次练习中，我们重构代码使用 <code>INTERFACE</code> 库指定C++标准。<br>目录 <code>Step4</code> 提供了初始代码。本次练习，完成 <code>TODO 1</code> 到 <code>TODO 3</code>。<br>首先编辑 <code>CMakeLists.txt</code> 文件。调用 <code>tutorial_compiler_flags</code> 构建 <code>INTERFACE</code> 库，指定 <code>cxx_std_11</code> 为目标编译特定。</p>
+<p>修改 <code>CMakeLists.txt</code> 和 <code>MathFunctions/CMakeLists.txt</code>，以便所有目标都具有对 <code>tutorial_compiler_flags</code> 的 <code>target_link_libraries()</code> 的调用。</p>
+<h2 id="构建运行"><a href="#构建运行" class="headerlink" title="构建运行"></a>构建运行</h2><p>创建新的目录 <code>Step4_build</code>，运行 <code>cmake</code> 命令行或 <code>cmake-gui</code> 配置项目，在构建目录下，使用所选构建工具或使用 <code>cmake --build .</code> 构建项目。</p>
+<p>以下为命令行的简单回顾</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir Step4_build</span><br><span class="line">cd Step4_build</span><br><span class="line">cmake ../Step4</span><br><span class="line">cmake --build .</span><br></pre></td></tr></table></figure>
+
+<p>然后，使用最新构建的 <code>Tutorial</code> ，确保它仍然正常工作。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>来修改上次练习的代码，使用interface库设置C++需求。<br>开始的时候，我们需要移除两个对两个变量 <code>CMAKE_CXX_STANDARD</code> 和 <code>CMAKE_CXX_STANDARD_REQUIRED</code> 的 <code>set()</code> 调用，需要移除一下几行</p>
+<table><tr><td bgcolor=blue>CMakeLists.txt</td></tr>
+<tr><td>
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+</td></tr>
+</table>
+
+<p>接下来，我们需要创建interface库，<code>tutorial_compiler_flags</code>。然后使用 <code>target_compile_features()</code> 来增加 <code>cxx_std_11</code> 特性。</p>
+<details><summary>TODO 1: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 1: CMakeLists.txt</td></tr>
+<tr><td>
+add_library(tutorial_compiler_flags INTERFACE)
+target_compile_features(tutorial_compiler_flags INTERFACE cxx_std_11)
+</td></tr>
+</table>
+</details>
+
+<p>最后，设置好接口库后，我们需要将可执行的 <code>Target</code> 和 <code>MathFunctions</code> 库链接到新的库 <code>tutorial_compiler_flags</code>库。代码分别如下所示：</p>
+<details><summary>TODO 2: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 2: CMakeLists.txt</td></tr>
+<tr><td>
+target_link_libraries(Tutorial PUBLIC ${EXTRA_LIBS} tutorial_compiler_flags)
+</td></tr>
+</table>
+</details>
+
+<p>以及</p>
+<details><summary>TODO 3: Click to show/hide answer</summary>
+<table><tr><td bgcolor=blue>TODO 3: MathFunctions/CMakeLists.txt</td></tr>
+<tr><td>
+target_link_libraries(MathFunctions tutorial_compiler_flags)
+</td></tr>
+</table>
+</details>
+
+<p>尽管如此，我们所有代码仍然需要C++11来构建。请注意，使用次方法，它是我们能够明确哪些目标获得了特定的需求。此外，我们在接口库中创建了一个单一的定义来源。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://bennuny.github.io/2023/01/09/cmake/cmake_tutorial_04/" data-id="clcq4i3t3000088gy00gufflj" data-title="添加生成器表达式 | Adding Generator Expressions" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/" rel="tag">cmake</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-cmake/cmake_tutorial_03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/01/05/cmake/cmake_tutorial_03/" class="article-date">
@@ -163,6 +263,8 @@ target_include_directories(Tutorial PUBLIC
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/" rel="tag">cmake</a></li></ul>
+
     </footer>
   </div>
   
@@ -389,6 +491,8 @@ target_include_libraries(Tutorial PUBLIC
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/" rel="tag">cmake</a></li></ul>
+
     </footer>
   </div>
   
@@ -632,10 +736,7 @@ if (argc < 2) {
 </ul>
 </li>
 <li><a href="../../../../../2023/01/05/cmake/cmake_tutorial_03/index.html">步骤三：添加库的使用需求</a><ul>
-<li>练习一：添加库的使用需求</li>
-</ul>
-</li>
-<li>步骤四：添加生成器表达式<ul>
+<li>练习一：添加库的使用需求<br><a href="../../../../../2023/01/09/cmake/cmake_tutorial_04/index.html">- 步骤四：添加生成器表达式</a></li>
 <li>练习一：使用接口库设置C++标准</li>
 <li>练习二：增加生成器表达式的编译警告</li>
 </ul>
@@ -768,6 +869,10 @@ if (argc < 2) {
       <ul>
         
           <li>
+            <a href="/2023/01/09/cmake/cmake_tutorial_04/">添加生成器表达式 | Adding Generator Expressions</a>
+          </li>
+        
+          <li>
             <a href="/2023/01/05/cmake/cmake_tutorial_03/">添加库的使用需求</a>
           </li>
         
@@ -781,10 +886,6 @@ if (argc < 2) {
         
           <li>
             <a href="/2022/12/27/cmake/cmake_tutorial/">CMake 教程 | CMake Tutorial</a>
-          </li>
-        
-          <li>
-            <a href="/2022/12/26/hello-world/">Hello World</a>
           </li>
         
       </ul>
